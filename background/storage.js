@@ -1,5 +1,5 @@
 /**
- * Responsabilidad: abstracción sobre chrome.storage.session para peticiones capturadas.
+ * Responsabilidad: abstracción sobre chrome.storage.local para peticiones capturadas.
  * No conoce filtros ni la UI.
  */
 
@@ -20,7 +20,7 @@ const MAX_REQUESTS = 200;
  * @returns {Promise<CapturedRequest[]>}
  */
 export async function getRequests() {
-  const result = await chrome.storage.session.get(STORAGE_KEY);
+  const result = await chrome.storage.local.get(STORAGE_KEY);
   return result[STORAGE_KEY] || [];
 }
 
@@ -32,7 +32,7 @@ export async function getRequests() {
 export async function addRequest(request) {
   const current = await getRequests();
   const updated = [request, ...current].slice(0, MAX_REQUESTS);
-  await chrome.storage.session.set({ [STORAGE_KEY]: updated });
+  await chrome.storage.local.set({ [STORAGE_KEY]: updated });
 }
 
 /**
@@ -40,7 +40,7 @@ export async function addRequest(request) {
  * @returns {Promise<void>}
  */
 export async function clearRequests() {
-  await chrome.storage.session.remove(STORAGE_KEY);
+  await chrome.storage.local.remove(STORAGE_KEY);
 }
 
 /**
@@ -48,7 +48,7 @@ export async function clearRequests() {
  * @returns {Promise<string>}
  */
 export async function getUrlPattern() {
-  const result = await chrome.storage.session.get('url_pattern');
+  const result = await chrome.storage.local.get('url_pattern');
   return result['url_pattern'] || '';
 }
 
@@ -58,7 +58,7 @@ export async function getUrlPattern() {
  * @returns {Promise<void>}
  */
 export async function saveUrlPattern(pattern) {
-  await chrome.storage.session.set({ url_pattern: pattern });
+  await chrome.storage.local.set({ url_pattern: pattern });
 }
 
 /**
@@ -66,7 +66,7 @@ export async function saveUrlPattern(pattern) {
  * @returns {Promise<boolean>}
  */
 export async function getScanningState() {
-  const result = await chrome.storage.session.get('is_scanning');
+  const result = await chrome.storage.local.get('is_scanning');
   return result['is_scanning'] === true; // false por defecto
 }
 
@@ -76,5 +76,5 @@ export async function getScanningState() {
  * @returns {Promise<void>}
  */
 export async function setScanningState(active) {
-  await chrome.storage.session.set({ is_scanning: active });
+  await chrome.storage.local.set({ is_scanning: active });
 }

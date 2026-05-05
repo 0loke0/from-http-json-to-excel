@@ -6,7 +6,8 @@
 
   "permissions": [
     "storage",
-    "downloads"
+    "downloads",
+    "unlimitedStorage"
   ],
   "host_permissions": [
     "<all_urls>"
