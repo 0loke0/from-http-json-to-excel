@@ -91,7 +91,7 @@ function buildSheetLabel(req) {
   try {
     const { pathname } = new URL(req.url);
     const parts = pathname.split('/').filter(Boolean);
-    return parts.slice(-2).join('_') || req.method;
+    return parts[parts.length - 1] || req.method;
   } catch {
     return req.method;
   }
