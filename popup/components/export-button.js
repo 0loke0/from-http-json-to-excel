@@ -59,6 +59,9 @@ export class ExportButton {
       captures.push({ ...parsed, label: buildSheetLabel(req) });
     }
 
+    const labels = deduplicateLabels(captures.map((c) => c.label));
+    labels.forEach((label, i) => { captures[i].label = label; });
+
     this.btn.disabled = true;
     this.btn.textContent = 'Generando…';
     this.errorEl.hidden = true;
@@ -84,15 +87,26 @@ export class ExportButton {
 
 /**
  * Genera una etiqueta corta para identificar la hoja en el Excel.
+ * Extrae el ultimo segmento del path antes del "?" sin depender de URL absoluta.
  * @param {{ url: string, method: string }} req
  * @returns {string}
  */
 function buildSheetLabel(req) {
-  try {
-    const { pathname } = new URL(req.url);
-    const parts = pathname.split('/').filter(Boolean);
-    return parts[parts.length - 1] || req.method;
-  } catch {
-    return req.method;
-  }
+  const path = req.url.split('?')[0];
+  const parts = path.split('/').filter(Boolean);
+  return parts[parts.length - 1] || req.method;
+}
+
+/**
+ * Garantiza nombres de hoja unicos agregando sufijo numerico cuando hay colisiones.
+ * @param {string[]} labels
+ * @returns {string[]}
+ */
+function deduplicateLabels(labels) {
+  const seen = new Map();
+  return labels.map((label) => {
+    const count = (seen.get(label) || 0) + 1;
+    seen.set(label, count);
+    return count === 1 ? label : `${label}_${count}`;
+  });
 }
