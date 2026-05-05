@@ -12,7 +12,7 @@ let requestList;
 let exportButton;
 
 async function init() {
-  new ScanToggle(
+  const scanToggle = new ScanToggle(
     document.getElementById('scan-section'),
     onScanChange
   );
@@ -29,7 +29,8 @@ async function init() {
 
   exportButton = new ExportButton(
     document.getElementById('export-section'),
-    () => requestList.getSelectedRequests()
+    () => requestList.getSelectedRequests(),
+    () => scanToggle.stop()
   );
 
   document.getElementById('clear-btn').addEventListener('click', onClear);

@@ -11,10 +11,12 @@ export class ExportButton {
   /**
    * @param {HTMLElement} container
    * @param {function(): import('../components/request-list.js').CapturedRequest[]} getSelected
+   * @param {function(): void} [onExportStart] - Se llama justo antes de iniciar la exportación
    */
-  constructor(container, getSelected) {
+  constructor(container, getSelected, onExportStart) {
     this.container = container;
     this.getSelected = getSelected;
+    this.onExportStart = onExportStart || null;
     this._render();
   }
 
@@ -60,6 +62,8 @@ export class ExportButton {
     this.btn.disabled = true;
     this.btn.textContent = 'Generando…';
     this.errorEl.hidden = true;
+
+    if (this.onExportStart) this.onExportStart();
 
     try {
       await buildAndDownloadExcel(captures);

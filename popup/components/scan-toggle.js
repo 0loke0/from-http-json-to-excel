@@ -94,4 +94,8 @@ export class ScanToggle {
   isActive() {
     return this.active;
   }
+
+  stop() {
+    if (this.active) this._stop();
+  }
 }
