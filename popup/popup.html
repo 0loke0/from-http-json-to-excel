@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JSON to Excel</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="app">
+
+    <header class="app-header">
+      <h1 class="app-title">JSON → Excel</h1>
+      <div class="header-actions">
+        <div id="scan-section"></div>
+        <button id="clear-btn" class="clear-btn" title="Limpiar historial">&#x1F5D1;</button>
+      </div>
+    </header>
+
+    <section id="filter-section"></section>
+
+    <section id="list-section" class="list-section"></section>
+
+    <footer id="export-section" class="export-section"></footer>
+
+  </div>
+
+  <!-- ExcelJS embebido localmente (MV3 no permite scripts remotos) -->
+  <script src="../lib/exceljs.min.js"></script>
+  <script type="module" src="popup.js"></script>
+</body>
+</html>
